@@ -1,0 +1,22 @@
+<h2>My Quotes</h2>
+
+<div>
+  <label>Quote saying:
+    <input #quoteSaying />
+  </label>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="add(quoteSaying.value); quoteSaying.value=''">
+    add
+  </button>
+</div>
+ 
+
+<ul class="heroes">
+  <li *ngFor="let quote of quotes">
+    <a routerLink="/detail/{{quote.id}}">
+      <span class="badge">{{quote.id}}</span> {{quote.saying}}
+    </a>
+    <button class="delete" title="delete quote"
+      (click)="delete(quote)">x</button>
+  </li>
+</ul>

@@ -1,0 +1,11 @@
+<h3>Top Quotes</h3>
+<div class="grid grid-pad">
+  <a *ngFor="let quote of quotes" class="col-1-4"
+      routerLink="/detail/{{quote.id}}">
+    <div class="module hero">
+      <h4>{{quote.saying}}</h4>
+    </div>
+  </a>
+</div>
+
+<app-quote-search></app-quote-search>

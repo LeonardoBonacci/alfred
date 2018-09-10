@@ -1,0 +1,13 @@
+<div id="search-component">
+  <h4>Quote Search</h4>
+
+  <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
+
+  <ul class="search-result">
+    <li *ngFor="let quote of quotes$ | async" >
+      <a routerLink="/detail/{{quote.id}}">
+        {{quote.saying}}
+      </a>
+    </li>
+  </ul>
+</div>
