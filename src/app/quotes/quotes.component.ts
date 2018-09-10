@@ -28,7 +28,8 @@ export class QuotesComponent implements OnInit {
     
     const q: Quote = {
      id: saying,
-     saying: saying
+     saying: saying,
+     author: 'bla bla'    
     };
     
     this.quoteService.addQuote(q)

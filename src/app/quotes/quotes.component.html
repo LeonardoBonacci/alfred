@@ -1,4 +1,4 @@
-<h2>My Quotes</h2>
+<h2>Some Quotes</h2>
 
 <div>
   <label>Quote saying:
@@ -14,7 +14,7 @@
 <ul class="quotes">
   <li *ngFor="let quote of quotes">
     <a routerLink="/detail/{{quote.id}}">
-      <span class="badge">{{quote.id}}</span> {{quote.saying}}
+      <span class="badge">{{quote.author | slice:0:7}}</span> {{quote.saying | slice:0:13}}
     </a>
     <button class="delete" title="delete quote"
       (click)="delete(quote)">x</button>

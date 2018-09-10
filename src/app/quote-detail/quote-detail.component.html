@@ -1,8 +1,12 @@
 <div *ngIf="quote">
-  <h2>{{quote.saying | uppercase}} Details</h2>
-  <div><span>id: </span>{{quote.id}}</div>
+  <h2>{{quote.saying | uppercase}}</h2>
   <div>
-    <label>name:
+    <label>author:
+      <input [(ngModel)]="quote.author" placeholder="author"/>
+    </label>
+  </div>
+  <div>
+    <label>quote:
       <input [(ngModel)]="quote.saying" placeholder="saying"/>
     </label>
   </div>
