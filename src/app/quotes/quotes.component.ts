@@ -27,14 +27,15 @@ export class QuotesComponent implements OnInit {
     if (!saying) { return; }
     
     const q: Quote = {
-     id: saying,
+     id: '',
      saying: saying,
-     author: 'bla bla'    
+     author: 'you'    
     };
     
     this.quoteService.addQuote(q)
       .subscribe(quote => {
-        this.quotes.push(quote);
+        this.getQuotes();
+//        this.quotes.push(quote);
       });
   }
  

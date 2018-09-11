@@ -14,7 +14,8 @@ const httpOptions = {
 @Injectable({ providedIn: 'root' })
 export class QuoteService {
 
-  private quotesUrl = 'api/quotes';  // URL to web api
+//  private quotesUrl = 'api/quotes';  // URL to web api
+  private quotesUrl = 'http://localhost:13579/hi/gems';  // URL to web api
 
   constructor(
     private http: HttpClient,
@@ -58,7 +59,7 @@ export class QuoteService {
       // if not search term, return empty quote array.
       return of([]);
     }
-    return this.http.get<Quote[]>(`${this.quotesUrl}/?saying=${term}`).pipe(
+    return this.http.get<Quote[]>(`${this.quotesUrl}/search?q=${term}`).pipe(
       tap(_ => this.log(`found quotes matching "${term}"`)),
       catchError(this.handleError<Quote[]>('searchQuotes', []))
     );
