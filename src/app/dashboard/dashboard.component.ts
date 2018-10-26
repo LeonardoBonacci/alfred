@@ -17,7 +17,16 @@ export class DashboardComponent implements OnInit {
   }
 
   getQuotes(): void {
+    this.quotes = [];
     this.quoteService.getQuotes()
-      .subscribe(quotes => this.quotes = quotes.slice(1, 5));
-  }
+            .subscribe(
+                x => {
+                     console.log('getQuotes next value: ' + x.saying);
+                     if (this.quotes.length < 4)
+                        this.quotes.push(x);
+                },
+                err => console.error('getQuotes failed: ' + err),
+                () => console.log('getQuotes completed')
+            );
+    }
 }

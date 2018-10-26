@@ -18,9 +18,16 @@ export class QuotesComponent implements OnInit {
   }
     
   getQuotes(): void {
+    this.quotes = [];
     this.quoteService.getQuotes()
-        .subscribe(quotes => this.quotes = quotes);
-  }
+            .subscribe(
+                x => {
+                        this.quotes.push(x);
+                },
+                err => console.error('getQuotes failed: ' + err),
+                () => console.log('getQuotes completed')
+            );
+    }
 
   add(saying: string): void {
     saying = saying.trim();

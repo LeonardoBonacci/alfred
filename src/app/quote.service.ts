@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { NgZone } from '@angular/core';
 
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -8,28 +9,36 @@ import { Quote } from './quote';
 import { MessageService } from './message.service';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({
+    'Content-Type':  'application/json'
+  })
 };
 
 @Injectable({ providedIn: 'root' })
 export class QuoteService {
 
 //  private quotesUrl = 'api/quotes';  // URL to web api
-  private quotesUrl = 'http://localhost:13579/hi/gems';  // URL to web api
+  private quotesUrl = 'http://talk.to.oogway/iam/derfla';  // URL to web api
+//  private quotesUrl = 'http://localhost:8080/gems';  // URL to web api
 
   constructor(
+    private zone: NgZone,
     private http: HttpClient,
     private messageService: MessageService) { }
 
   /** GET quotes from the server */
-  getQuotes (): Observable<Quote[]> {
-    return this.http.get<Quote[]>(this.quotesUrl)
-      .pipe(
-        tap(quotes => this.log('fetched quotes')),
-        catchError(this.handleError('getQuotes', []))
-      );
-  }
+  getQuotes(): Observable<Quote> {
+      const quotes = Observable.create((observer) => {
+        const eventSource = new EventSource(this.quotesUrl);
+        eventSource.onmessage = (event) => {
+            this.zone.run(() => observer.next(JSON.parse(event.data)));
+        };
+        eventSource.onerror = (error) => observer.error(error);
+     });
 
+      return quotes;
+  }
+    
   /** GET quote by id. Return `undefined` when id not found */
   getQuoteNo404<Data>(id: string): Observable<Quote> {
     const url = `${this.quotesUrl}/?id=${id}`;
@@ -107,7 +116,8 @@ export class QuoteService {
       console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
+        this.log(`${error.status} ${error.statusText} -  ${error.url}`);
+        this.log(`${operation} failed: ${error.message}`);
 
       // Let the app keep running by returning an empty result.
       return of(result as T);
